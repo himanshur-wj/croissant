@@ -1,0 +1,21 @@
+{
+  "name": "croissant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle compile --all"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.14.8",
+    "@openzeppelin/contracts-upgradeable": "^4.4.1",
+    "@openzeppelin/truffle-upgrades": "^1.11.0",
+    "@truffle/hdwallet-provider": "^1.4.2",
+    "truffle-plugin-verify": "^0.5.11"
+  }
+}
