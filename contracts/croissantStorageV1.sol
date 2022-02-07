@@ -18,6 +18,8 @@ contract CroissantStorageV1 is ERC20Upgradeable, OwnableUpgradeable {
 
     string public dataURI;
 
+    bool public available;
+
     struct spaceTupple {
         uint256 spaceId;
         address spaceAssignedTo;
@@ -27,7 +29,18 @@ contract CroissantStorageV1 is ERC20Upgradeable, OwnableUpgradeable {
         uint256 totalRate;
     }
 
+    struct userInfo {
+        uint entryTime;
+        uint depositToken;
+        uint usedToken;
+        uint numGuest;
+    }
+
     mapping (uint256 => spaceTupple) public spaceInfo; 
+
+    mapping(address => userInfo) users;
+
+    event checkedIn(address indexed _who, uint _spaceId);
 
     modifier onlyHourlyRate(uint256 _rate){
         require((hourlyRate*8) == _rate, "Rate is incorrect");
@@ -49,17 +62,23 @@ contract CroissantStorageV1 is ERC20Upgradeable, OwnableUpgradeable {
 
     function checkIn(spaceTupple memory info) external onlyHourlyRate(info.totalRate) returns(uint256){
         spaceIdCounter = spaceIdCounter + 1;
-        // transfer this  rate tokens from msg.sender to smart contract
-        // update the space Tupple info into mapping spacing info
-        // emit event
-        // returns space id
+        require(msg.value == (hourlyRate*8), "Please send accurate Token");
+        UserInfo user = UserInfo(block.timestamp,8,0,0);
+        users[msg.sender] = user;
+        emit checkedIn(msg.sender , spaceIdCounter);
+        numActiveCheckins++;
+        available = (numSeats > numActiveCheckins ? true : false);
+        returns spaceIdCounter;
+    }
 
-
+    function spaceUsedTimeCalculator(uint256 entryTime) private view returns(uint256){
+        return (block.timestamp-entryTime)/(3600);
     }
 
     function checkOut(spaceTupple memory info) external returns(bool){
-        spaceIdCounter = spaceIdCounter + 1;
+        spaceIdCounter = spaceIdCounter - 1;
         // calculate tokens fees
+        spaceUsedTime =spaceUsedTimeCalculator(users[msg.sender].entryTime);
         // transfer remaining into info.spaceAssignedTo address
         // emit event 
         // delete space id then return true

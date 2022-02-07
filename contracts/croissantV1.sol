@@ -23,13 +23,14 @@ contract CroissantV1 is CroissantStorageV1{
     }
 
     function addSeat(uint256 _numSeats) external onlyManager returns(bool) {
-        // add the seats
-        //return true
+        numSeats += _numSeats;
+        return true;
     }
 
     function removeSeat(uint256 _numSeats) external onlyManager returns(bool) {
-        // remove the seats
-        //return true
+        assert(numSeats -= _numSeats < numSeats,"remove less seats");
+        numSeats -= _numSeats;
+        return true;
     }
 
 
