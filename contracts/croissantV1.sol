@@ -40,7 +40,7 @@ contract CroissantV1 is CroissantStorageV1{
     }
 
     function removeManager(address _manager) external onlyOwner returns(bool){
-            for(uint i = 0; i < Manager.length; i++ ){
+        for(uint i = 0; i < Manager.length; i++ ){
             if(Manager[i] == _manager){
                 delete Manager[i];
             }
@@ -48,6 +48,10 @@ contract CroissantV1 is CroissantStorageV1{
         return true;
     }
 
+    function toggleAvailable() external onlyManager returns(bool){
+        available = !available;
+    }
+    
     function update() external onlyOwner returns(bool){
         // updates the checkins and checkouts
         // return true
