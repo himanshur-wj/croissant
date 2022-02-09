@@ -58,7 +58,7 @@ contract CroissantV1 is CroissantStorageV1{
     }
 
     function setDataURI(string memory _uri) external onlyOwner returns(bool){
-        dataURI=_uri// set new uri and return true
+        dataURI=_uri;// set new uri and return true
         return true;
     }
 
